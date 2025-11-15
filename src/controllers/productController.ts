@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import Product from "../models/Product.model";
-import { generarId } from "../helpers/generarId";
 
 // Obtener todos los productos
-export const getProducts = async (res: Response) => {
+export const getProducts = async (req: Request, res: Response) => {
     try {
         const products = await Product.findAll({
             attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -40,10 +39,7 @@ export const getProductsById = async (req: Request, res: Response) => {
 // Crear un producto
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        const product = await Product.create({
-            id: generarId(),
-            ...req.body
-        });
+        const product = await Product.create(req.body);
         return res.status(201).json({
             data: product,
             msg: "Producto creado correctamente",

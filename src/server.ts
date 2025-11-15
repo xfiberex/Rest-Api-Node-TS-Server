@@ -1,10 +1,12 @@
 import express from "express";
 import router from "./router";
+import swaggerUI from "swagger-ui-express";
+import swaggerSpec, { swaggerUIOptions } from "./config/swagger";
 import db from "./config/db";
 import colors from "colors";
 
 // Conectar a base de datos
-async function connectDB() {
+export async function connectDB() {
     try {
         await db.authenticate();
         await db.sync();
@@ -18,7 +20,7 @@ async function connectDB() {
 }
 
 // Solo conectar si no estamos en entorno de test
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
     connectDB();
 }
 
@@ -30,9 +32,7 @@ server.use(express.json());
 // Englobar metodos REST API desde router.ts
 server.use("/api/products", router);
 
-// Probar URL con Supertest
-server.get("/api", (req, res) => {
-    res.json({ msg: "Desde api" });
-});
+// Documentación de API's con Swagger
+server.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec, swaggerUIOptions));
 
 export default server;

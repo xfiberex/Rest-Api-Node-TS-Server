@@ -11,13 +11,6 @@ import {
     tableName: "products",
 })
 class Product extends Model {
-    @PrimaryKey
-    @Column({
-        type: DataType.UUID,
-        allowNull: false,
-    })
-    declare id: string;
-
     @Column({
         type: DataType.STRING(100),
         allowNull: false,
