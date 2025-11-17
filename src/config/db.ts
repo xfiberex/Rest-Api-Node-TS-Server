@@ -16,7 +16,7 @@ dotenv.config();
 
 // Base de datos de desarrollo PostgreSQL
 const db = new Sequelize(process.env.DATABASE_URL_TEST!, {
-    models: [__dirname + "./../models/**/*.ts"],
+    models: [__dirname + "./../models/**/*"],
     logging: false,
 });
 
