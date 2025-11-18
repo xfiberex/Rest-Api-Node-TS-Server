@@ -242,13 +242,13 @@ Colores en terminal para mejor visualización:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📄 Licencia
+## Licencia
 
-ISC
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
-## 👨‍💻 Autor
+## Autor
 
-**Ricky Jimenez**
+**Ricky Angel Jiménez Bueno**
 
 ## 🔗 Enlaces Útiles
 
@@ -259,7 +259,7 @@ ISC
 - [Swagger Documentation](https://swagger.io/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 
-## 📈 Mejorar posibles
+## 📈 Posibles Mejoras
 
 - Autenticación JWT
 - Paginación de resultados

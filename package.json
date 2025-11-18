@@ -2,8 +2,8 @@
   "name": "rest_api_node_ts_server",
   "version": "1.0.0",
   "description": "Rest API's con Express y TypeScript",
-  "license": "ISC",
-  "author": "Ricky Jimenez",
+  "license": "MIT",
+  "author": "Ricky Angel Jiménez Bueno",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
