@@ -3,6 +3,7 @@
 API RESTful desarrollada con Node.js, Express y TypeScript para la gestión de inventario de productos. Incluye autenticación, validación de datos, documentación con Swagger, y pruebas unitarias.
 
 **🌐 Despliegue**: El servidor y la base de datos PostgreSQL están desplegados en [Render](https://render.com/)
+**🛡️ Seguridad**: Fue mejorada utilizando Agentes IA de GitHub Copilot, solo con Claude Sonnet 4.5.
 
 ## 🚀 Características
 
