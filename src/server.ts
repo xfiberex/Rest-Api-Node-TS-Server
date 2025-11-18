@@ -6,7 +6,6 @@ import db from "./config/db";
 import colors from "colors";
 import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
-import { error } from "console";
 
 // Conectar a base de datos
 export async function connectDB() {
@@ -35,7 +34,7 @@ const corsOptions: CorsOptions = {
         if (origin === process.env.FRONTEND_URL) {
             callback(null, true);
         } else {
-            callback(new error("Errors de CORS"));
+            callback(new Error("Error de CORS"));
         }
     },
 };
