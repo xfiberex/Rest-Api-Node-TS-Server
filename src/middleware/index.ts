@@ -8,3 +8,7 @@ export const handleInputErrors = (req: Request, res: Response, next: NextFunctio
     }
     next();
 };
+
+// Re-exportar middlewares de otros archivos para facilitar imports
+export { errorHandler, notFoundHandler, AppError } from "./errorHandler";
+export { generalLimiter, writeLimiter, createProductLimiter } from "./rateLimiter";

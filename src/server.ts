@@ -6,6 +6,10 @@ import db from "./config/db";
 import colors from "colors";
 import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
+import helmet from "helmet";
+import hpp from "hpp";
+import { generalLimiter } from "./middleware/rateLimiter";
+import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 
 // Conectar a base de datos
 export async function connectDB() {
@@ -28,26 +32,62 @@ if (process.env.NODE_ENV !== "test") {
 
 const server = express();
 
-// Permitir conexiones
+// ========== SEGURIDAD ==========
+
+// Helmet - Configurar headers de seguridad HTTP
+server.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                styleSrc: ["'self'", "'unsafe-inline'"], // Para Swagger UI
+                scriptSrc: ["'self'", "'unsafe-inline'"], // Para Swagger UI
+                imgSrc: ["'self'", "data:", "https:"],
+            },
+        },
+        crossOriginEmbedderPolicy: false, // Para Swagger UI
+    })
+);
+
+// HPP - Protección contra HTTP Parameter Pollution
+server.use(hpp());
+
+// Rate Limiting - Limitar peticiones para prevenir ataques de fuerza bruta
+server.use(generalLimiter);
+
+// Permitir conexiones - CORS
 const corsOptions: CorsOptions = {
     origin: function (origin, callback) {
+        // Permitir peticiones sin origin (como mobile apps, Postman, etc.)
+        if (!origin) return callback(null, true);
+        
         if (origin === process.env.FRONTEND_URL) {
             callback(null, true);
         } else {
             callback(new Error("Error de CORS"));
         }
     },
+    credentials: true,
+    optionsSuccessStatus: 200,
 };
 server.use(cors(corsOptions));
 
-// Leer datos de formularios
-server.use(express.json());
+// ========== BODY PARSING ==========
 
-// Mas detalles sobre las peticiones en consola
-server.use(morgan("dev"));
+// Leer datos de formularios con límite de tamaño
+server.use(express.json({ limit: "10mb" }));
+server.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Englobar metodos REST API desde router.ts
-server.use("/api/products", router);
+// ========== LOGGING ==========
+
+// Más detalles sobre las peticiones en consola
+if (process.env.NODE_ENV === "development") {
+    server.use(morgan("dev"));
+} else {
+    server.use(morgan("combined"));
+}
+
+// ========== RUTAS ==========
 
 // Documentación de API's con Swagger
 server.use(
@@ -55,5 +95,16 @@ server.use(
     swaggerUI.serve,
     swaggerUI.setup(swaggerSpec, swaggerUIOptions)
 );
+
+// Englobar métodos REST API desde router.ts
+server.use("/api/products", router);
+
+// ========== MANEJO DE ERRORES ==========
+
+// Manejar rutas no encontradas
+server.use(notFoundHandler);
+
+// Middleware de manejo de errores centralizado (debe ir al final)
+server.use(errorHandler);
 
 export default server;

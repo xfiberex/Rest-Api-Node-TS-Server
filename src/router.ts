@@ -8,7 +8,7 @@ import {
     updateAvailability,
     updateProduct,
 } from "./controllers/productController";
-import { handleInputErrors } from "./middleware";
+import { handleInputErrors, createProductLimiter } from "./middleware";
 
 const router = Router();
 
@@ -124,6 +124,7 @@ router.get(
  */
 router.post(
     "/",
+    createProductLimiter, // Rate limiting específico para creación
     // Validar de datos antes de guardarlos en la BD
     body("name")
         .notEmpty()
