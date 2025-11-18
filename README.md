@@ -1,31 +1,24 @@
-# 🚀 Inventario de Productos - Server
+# Inventario de Productos - Server
 
-REST API robusta para la gestión de inventario de productos, construida con Node.js, Express, TypeScript y PostgreSQL.
+REST API para la gestión de inventario de productos, construida con Node.js, Express, TypeScript y PostgreSQL.
 
-## 🛠️ Tecnologías
+## Tecnologías
 
-- **Node.js** - Entorno de ejecución de JavaScript
-- **Express 5.1.0** - Framework web minimalista y flexible
-- **TypeScript 5.9.3** - JavaScript con tipos estáticos
-- **PostgreSQL** - Base de datos relacional
-- **Sequelize 6.37.7** - ORM para Node.js
-- **Sequelize-TypeScript 2.1.6** - Decoradores TypeScript para Sequelize
-- **Express Validator 7.3.0** - Validación y sanitización de datos
-- **Swagger** - Documentación automática de API
-- **Jest 30.2.0** - Framework de testing
-- **Supertest 7.1.4** - Testing de APIs HTTP
+- **Node.js** con **Express**
+- **TypeScript**
+- **PostgreSQL** con **Sequelize**
+- **Express Validator** - Validación de datos
+- **Swagger** - Documentación de API
+- **Jest** y **Supertest** - Testing
 
-## ✨ Características
+## Características
 
-- ✅ **CRUD Completo** - Operaciones completas para productos
-- 🔒 **Validación de Datos** - Validación robusta con Express Validator
-- 📚 **Documentación API** - Swagger UI interactivo
-- 🧪 **Testing Completo** - Tests unitarios e integración con Jest
-- 🔄 **CORS Habilitado** - Configurado para comunicación con frontend
-- 📊 **Logging** - Morgan para logs de requests HTTP
-- 🎨 **Colores en Terminal** - Output colorizado con colors
-- 🔐 **Variables de Entorno** - Configuración segura con dotenv
-- 🏗️ **Arquitectura MVC** - Separación de responsabilidades
+- CRUD completo de productos
+- Validación de datos
+- Documentación API interactiva
+- Tests con Jest
+- CORS habilitado
+- Arquitectura MVC
 
 ## 📁 Estructura del Proyecto
 
@@ -57,66 +50,30 @@ Server/
 └── tsconfig.json
 ```
 
-## 🔧 Instalación
+## Instalación
 
-1. **Clonar el repositorio**
-```bash
-git clone <url-repositorio>
-cd Server
-```
-
-2. **Instalar dependencias**
 ```bash
 npm install
 ```
 
-3. **Configurar variables de entorno**
-
-Crea un archivo `.env` en la raíz del proyecto:
+Configura las variables de entorno en `.env`:
 
 ```env
-# Base de datos de desarrollo
-DATABASE_URL_TEST=postgres://usuario:password@localhost:5432/inventario_dev
-
-# Base de datos de producción
+DATABASE_URL_TEST=postgres://usuario:password@localhost:5432/inventario_test
 DATABASE_URL=postgres://usuario:password@localhost:5432/inventario_prod
-
-# Puerto del servidor
 PORT=4000
 ```
 
-4. **Crear la base de datos**
-
-```sql
-CREATE DATABASE inventario_dev;
-CREATE DATABASE inventario_test;
-```
-
-## 🎯 Scripts Disponibles
+## Scripts
 
 ```bash
-# Modo desarrollo con auto-reload
-npm run dev
-
-# Compilar TypeScript a JavaScript
-npm run build
-
-# Ejecutar tests
-npm test
-
-# Ejecutar tests con cobertura
-npm run test:coverage
-
-# Limpiar base de datos de test
-npm run pretest
-
-# Inicializar configuración de Jest
-npm run jestc
+npm run dev          # Desarrollo
+npm run build        # Compilar
+npm test             # Tests
+npm run test:coverage # Cobertura
 ```
 
-## 🌐 Endpoints de la API
-
-### Productos
+## Endpoints de la API
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
@@ -124,119 +81,21 @@ npm run jestc
 | GET | `/api/products/:id` | Obtener un producto por ID |
 | POST | `/api/products` | Crear un nuevo producto |
 | PUT | `/api/products/:id` | Actualizar un producto completo |
-| PATCH | `/api/products/:id` | Actualizar disponibilidad de producto |
+| PATCH | `/api/products/:id` | Actualizar disponibilidad |
 | DELETE | `/api/products/:id` | Eliminar un producto |
 
-### Documentación
+Documentación interactiva disponible en: `http://localhost:4000/docs`
 
-| Endpoint | Descripción |
-|----------|-------------|
-| `/docs` | Swagger UI - Documentación interactiva |
-
-## 📝 Ejemplos de Uso
-
-### Crear un Producto
-
-```bash
-POST /api/products
-Content-Type: application/json
-
-{
-  "name": "Laptop Dell XPS 15",
-  "price": 1299.99
-}
-```
-
-**Respuesta:**
-```json
-{
-  "data": {
-    "id": 1,
-    "name": "Laptop Dell XPS 15",
-    "price": 1299.99,
-    "availability": true,
-    "createdAt": "2025-11-17T10:30:00.000Z",
-    "updatedAt": "2025-11-17T10:30:00.000Z"
-  }
-}
-```
-
-### Obtener Todos los Productos
-
-```bash
-GET /api/products
-```
-
-**Respuesta:**
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Laptop Dell XPS 15",
-      "price": 1299.99,
-      "availability": true,
-      "createdAt": "2025-11-17T10:30:00.000Z",
-      "updatedAt": "2025-11-17T10:30:00.000Z"
-    }
-  ]
-}
-```
-
-### Actualizar un Producto
-
-```bash
-PUT /api/products/1
-Content-Type: application/json
-
-{
-  "name": "Laptop Dell XPS 15 (Actualizado)",
-  "price": 1199.99,
-  "availability": true
-}
-```
-
-### Actualizar Disponibilidad
-
-```bash
-PATCH /api/products/1
-```
-
-### Eliminar un Producto
-
-```bash
-DELETE /api/products/1
-```
-
-## 🔒 Validaciones
-
-El servidor implementa validaciones exhaustivas usando Express Validator:
-
-### Crear Producto
-- `name`: Requerido, string no vacío
-- `price`: Requerido, número mayor a 0
-
-### Actualizar Producto
-- `name`: Requerido, string no vacío
-- `price`: Requerido, número mayor a 0
-- `availability`: Requerido, booleano
-
-### ID de Producto
-- Debe ser un entero válido
-- El producto debe existir en la base de datos
-
-## 🗄️ Modelo de Datos
-
-### Product
+## Modelo de Datos
 
 ```typescript
 {
-  id: number;          // Auto-incremental
-  name: string;        // Nombre del producto
-  price: number;       // Precio (decimal)
-  availability: boolean; // Disponibilidad (default: true)
-  createdAt: Date;     // Fecha de creación
-  updatedAt: Date;     // Fecha de actualización
+  id: number;
+  name: string;
+  price: number;
+  availability: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
 
@@ -400,12 +259,12 @@ ISC
 - [Swagger Documentation](https://swagger.io/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 
-## 📈 Roadmap
+## 📈 Mejorar posibles
 
-- [ ] Autenticación JWT
-- [ ] Paginación de resultados
-- [ ] Filtros y búsqueda avanzada
-- [ ] Upload de imágenes de productos
-- [ ] Cache con Redis
-- [ ] Rate limiting
-- [ ] WebSockets para actualizaciones en tiempo real
+- Autenticación JWT
+- Paginación de resultados
+- Filtros y búsqueda avanzada
+- Upload de imágenes de productos
+- Cache con Redis
+- Rate limiting
+- WebSockets para actualizaciones en tiempo real
