@@ -2,6 +2,8 @@
 
 API RESTful desarrollada con Node.js, Express y TypeScript para la gestión de inventario de productos. Incluye autenticación, validación de datos, documentación con Swagger, y pruebas unitarias.
 
+**🌐 Despliegue**: El servidor y la base de datos PostgreSQL están desplegados en [Render](https://render.com/)
+
 ## 🚀 Características
 
 - ✅ **CRUD completo** de productos
@@ -199,6 +201,55 @@ npm run pretest
 - **Morgan** - HTTP request logger
 - **Colors** - Colores en consola
 - **dotenv** - Variables de entorno
+
+## 🚀 Despliegue
+
+### Render (Producción)
+
+El servidor está desplegado en [Render](https://render.com/) con las siguientes configuraciones:
+
+#### 1. Base de Datos PostgreSQL
+
+1. Crear una nueva base de datos PostgreSQL en Render
+2. Copiar la URL de conexión interna proporcionada
+3. Configurarla como variable de entorno `DATABASE_URL`
+
+#### 2. Web Service
+
+1. Crear un nuevo Web Service en Render
+2. Conectar el repositorio de GitHub
+3. Configurar:
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Environment**: `Node`
+
+#### 3. Variables de Entorno en Render
+
+```env
+NODE_ENV=production
+PORT=3000
+DATABASE_URL=<URL_de_PostgreSQL_Render>
+DATABASE_URL_TEST=<URL_de_PostgreSQL_Test_Render>
+FRONTEND_URL=<URL_del_cliente_en_Vercel>
+```
+
+#### 4. Características de Render
+
+- ✅ Despliegue automático desde GitHub
+- ✅ SSL/HTTPS gratuito
+- ✅ Base de datos PostgreSQL gestionada
+- ✅ Logs en tiempo real
+- ✅ Variables de entorno seguras
+
+### Build Manual Local
+
+```bash
+# Construir para producción
+npm run build
+
+# Los archivos compilados estarán en dist/
+node dist/index.js
+```
 
 ## 👤 Autor
 
