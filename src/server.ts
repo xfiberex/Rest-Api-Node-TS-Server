@@ -32,6 +32,12 @@ if (process.env.NODE_ENV !== "test") {
 
 const server = express();
 
+// ========== CONFIGURACIÓN DE PROXY ==========
+
+// Confiar en proxy reverso (necesario para Render, Heroku, etc.)
+// Permite que Express obtenga la IP real del cliente desde headers X-Forwarded-*
+server.set("trust proxy", 1);
+
 // ========== SEGURIDAD ==========
 
 // Helmet - Configurar headers de seguridad HTTP
