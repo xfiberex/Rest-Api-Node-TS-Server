@@ -169,37 +169,110 @@ Request → Router → Middleware → Controller → Model → Database
 - ✅ Variables de entorno para datos sensibles
 - ✅ Manejo de errores centralizado
 
-## 🚀 Despliegue
+## Despliegue en Render
 
-### Producción
+### 1. Preparar el Proyecto
 
-1. **Compilar TypeScript**
-```bash
-npm run build
+Asegúrate de que tu repositorio esté en GitHub y que el `package.json` tenga los scripts necesarios:
+
+```json
+"scripts": {
+  "build": "tsc",
+  "start": "node dist/index.js"
+}
 ```
 
-2. **Configurar variables de entorno de producción**
-```env
-DATABASE_URL=postgresql://...
+### 2. Crear Base de Datos PostgreSQL en Render
+
+1. Ve a [Render Dashboard](https://dashboard.render.com/)
+2. Click en **"New +"** → **"PostgreSQL"**
+3. Configura:
+   - **Name**: `inventario-db` (o el nombre que prefieras)
+   - **Database**: `inventario_prod`
+   - **User**: Se genera automáticamente
+   - **Region**: Selecciona la más cercana
+   - **Plan**: Free (o el que necesites)
+4. Click en **"Create Database"**
+5. **Guarda la URL de conexión** (Internal Database URL)
+
+### 3. Crear Web Service en Render
+
+1. En el Dashboard, click en **"New +"** → **"Web Service"**
+2. Conecta tu repositorio de GitHub
+3. Configura el servicio:
+   - **Name**: `inventario-api` (o el nombre que prefieras)
+   - **Region**: La misma que la base de datos
+   - **Branch**: `main`
+   - **Root Directory**: `Server` (si está en una carpeta)
+   - **Runtime**: `Node`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Plan**: Free (o el que necesites)
+
+### 4. Configurar Variables de Entorno
+
+En la sección **"Environment"** agrega:
+
+```
+DATABASE_URL=<Internal_Database_URL_de_tu_BD>
 PORT=4000
 NODE_ENV=production
 ```
 
-3. **Iniciar servidor**
-```bash
-node dist/index.js
+> **Nota**: La `Internal Database URL` la obtienes de tu base de datos PostgreSQL creada en el paso 2.
+
+### 5. Desplegar
+
+1. Click en **"Create Web Service"**
+2. Render automáticamente:
+   - Instalará las dependencias
+   - Compilará TypeScript
+   - Iniciará el servidor
+3. Una vez desplegado, obtendrás una URL como: `https://inventario-api.onrender.com`
+
+### 6. Verificar el Despliegue
+
+Prueba los endpoints:
+- `https://tu-app.onrender.com/api/products`
+- `https://tu-app.onrender.com/docs` (Swagger UI)
+
+### 7. Configurar Auto-Deploy (Opcional)
+
+Render automáticamente redesplega cuando haces push a la rama `main`.
+
+### Notas Importantes
+
+- ⚠️ **Plan Free**: El servidor se suspende después de 15 minutos de inactividad. La primera petición puede tardar 30-60 segundos.
+- 🔄 **Sincronización de BD**: Sequelize creará las tablas automáticamente si no existen.
+- 🌍 **CORS**: Asegúrate de configurar CORS para permitir peticiones desde tu dominio de Vercel.
+
+### Actualizar CORS para Producción
+
+En tu archivo `server.ts`, actualiza la configuración de CORS:
+
+```typescript
+import cors from 'cors';
+
+const corsOptions = {
+    origin: function(origin, callback) {
+        const whitelist = [
+            process.env.FRONTEND_URL, // URL de Vercel
+            'http://localhost:5173'    // Desarrollo local
+        ];
+        if (whitelist.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+
+server.use(cors(corsOptions));
 ```
 
-### Docker (Opcional)
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY dist ./dist
-EXPOSE 4000
-CMD ["node", "dist/index.js"]
+Agrega en las variables de entorno de Render:
+```
+FRONTEND_URL=https://tu-app.vercel.app
 ```
 
 ## 📊 Logging
