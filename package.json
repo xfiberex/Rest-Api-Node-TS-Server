@@ -12,7 +12,8 @@
     "jestc": "npx ts-jest config:init",
     "test": "jest --detectOpenHandles",
     "test:coverage": "npm run pretest && jest --detectOpenHandles --coverage",
-    "pretest": "ts-node src/data/clearDatabase.ts --clear"
+    "pretest": "ts-node src/data/clearDatabase.ts --clear",
+    "clean:products": "ts-node -e \"import('./src/utils/databaseScheduler').then(m => m.clearAllProducts())\""
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

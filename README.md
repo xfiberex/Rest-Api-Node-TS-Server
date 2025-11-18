@@ -16,6 +16,7 @@ API RESTful desarrollada con Node.js, Express y TypeScript para la gestión de i
 - ✅ **Testing** con Jest y Supertest
 - ✅ **Logging** con Morgan
 - ✅ **Manejo de errores** centralizado
+- ✅ **Limpieza automática diaria** de base de datos (Demo)
 
 ## 📋 Requisitos Previos
 
@@ -77,6 +78,51 @@ npm run test:coverage
 
 # Tests simples
 npm test
+```
+
+### Limpiar Base de Datos Manualmente
+```bash
+# Eliminar todos los productos y reiniciar secuencia de IDs
+npm run clean:products
+```
+
+## 🗑️ Limpieza Automática de Base de Datos
+
+Para optimizar recursos en entornos de demostración, el servidor incluye un sistema de limpieza automática:
+
+### Funcionamiento
+
+- **Frecuencia**: Cada día a medianoche (00:00:00)
+- **Acción**: Elimina todos los productos y reinicia la secuencia de IDs a 1
+- **Activación**: Automática en producción, manual en desarrollo
+
+### Configuración
+
+En el archivo `.env`:
+
+```env
+# Habilitar en desarrollo (opcional)
+ENABLE_AUTO_CLEANUP=true
+
+# En producción se activa automáticamente
+NODE_ENV=production
+```
+
+### Logs del Sistema
+
+```
+🕐 Programando limpieza automática diaria...
+⏰ Próxima limpieza en: 23h 45m
+✅ Scheduler de limpieza automática iniciado
+```
+
+Cuando se ejecuta la limpieza:
+
+```
+🔄 Iniciando limpieza automática diaria...
+🗑️  Limpiando 15 productos de la base de datos...
+✅ Base de datos limpiada y secuencia de IDs reiniciada
+✅ Limpieza diaria completada exitosamente
 ```
 
 ## 📚 Documentación de la API

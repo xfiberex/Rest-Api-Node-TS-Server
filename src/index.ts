@@ -2,6 +2,7 @@ import server from "./server";
 import colors from "colors";
 import dotenv from "dotenv";
 import { validateEnv, checkOptionalEnv } from "./config/validateEnv";
+import { scheduleDailyCleanup, checkAndCleanOnStartup } from "./utils/databaseScheduler";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -30,10 +31,16 @@ process.on("unhandledRejection", (reason: any) => {
     process.exit(1);
 });
 
-const serverInstance = server.listen(port, () => {
+const serverInstance = server.listen(port, async () => {
     console.log(colors.cyan.bold(`Rest API en el puerto ${port}`));
     console.log(colors.cyan(`Entorno: ${process.env.NODE_ENV || "development"}`));
     console.log(colors.cyan(`Documentación disponible en: http://localhost:${port}/docs`));
+    
+    // Verificar estado de la base de datos al iniciar
+    await checkAndCleanOnStartup();
+    
+    // Programar limpieza automática diaria
+    scheduleDailyCleanup();
 });
 
 // Manejo de cierre graceful
