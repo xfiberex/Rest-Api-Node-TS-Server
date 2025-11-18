@@ -95,6 +95,19 @@ if (process.env.NODE_ENV === "development") {
 
 // ========== RUTAS ==========
 
+// Ruta de health check para Render
+server.get("/", (req, res) => {
+    res.json({
+        status: "ok",
+        message: "API de Inventario de Productos",
+        version: "1.0.0",
+        endpoints: {
+            products: "/api/products",
+            docs: "/docs"
+        }
+    });
+});
+
 // Documentación de API's con Swagger
 server.use(
     "/docs",
