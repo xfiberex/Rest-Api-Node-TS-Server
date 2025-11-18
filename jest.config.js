@@ -6,10 +6,7 @@ module.exports = {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: {
-          module: 'commonjs',
-          esModuleInterop: true,
-        },
+        tsconfig: 'tsconfig.test.json',
       },
     ],
   },

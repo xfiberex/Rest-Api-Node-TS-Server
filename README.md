@@ -217,9 +217,13 @@ En la sección **"Environment"** agrega:
 DATABASE_URL=<Internal_Database_URL_de_tu_BD>
 PORT=4000
 NODE_ENV=production
+FRONTEND_URL=https://tu-app.vercel.app
 ```
 
-> **Nota**: La `Internal Database URL` la obtienes de tu base de datos PostgreSQL creada en el paso 2.
+> **Importante**: 
+> - La `DATABASE_URL` (no `DATABASE_URL_TEST`) la obtienes de tu base de datos PostgreSQL creada en el paso 2
+> - Usa la **Internal Database URL** que tiene este formato: `postgres://user:password@hostname/database`
+> - Agrega `FRONTEND_URL` con la URL de tu cliente en Vercel para configurar CORS
 
 ### 5. Desplegar
 
